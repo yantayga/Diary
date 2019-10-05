@@ -6,6 +6,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    _db.createTables();
 }
 
 MainWindow::~MainWindow()
@@ -13,3 +14,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::dateChanged(QDate date)
+{
+    qDebug() << "Date changed to " << date;
+}

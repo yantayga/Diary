@@ -6,17 +6,124 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>1049</width>
     <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
-  <widget class="QMenuBar" name="menubar"/>
+  <property name="animated">
+   <bool>false</bool>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QFrame" name="frameLeft">
+      <property name="minimumSize">
+       <size>
+        <width>248</width>
+        <height>169</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>248</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <widget class="QCalendarWidget" name="diaryDate">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>248</width>
+         <height>169</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>1</number>
+      </property>
+      <widget class="QWidget" name="tabExercises">
+       <attribute name="title">
+        <string>Упражнения</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="tabFood">
+       <attribute name="title">
+        <string>Еда</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="tabTracking">
+       <attribute name="title">
+        <string>Параметры</string>
+       </attribute>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1049</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+   </widget>
+   <addaction name="menuFile"/>
+  </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>diaryDate</sender>
+   <signal>clicked(QDate)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>dateChanged(QDate)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>123</x>
+     <y>102</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>524</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>dateChanged(QDate)</slot>
+ </slots>
 </ui>
