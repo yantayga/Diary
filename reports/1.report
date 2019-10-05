@@ -1,0 +1,24 @@
+[Common]
+Name=Отчет по основным нутриентам<br> с :date1 по :date2
+Query=SELECT (CASE IFNULL(foodParameter.idSuperParameter,0) WHEN 0 THEN '' ELSE '  |-  ' END) || foodParameter.name || ', ' || unit.shortName, ROUND(SUM(IFNULL(foodContent.amount,0)*IFNULL(foodIntake.amount,0)/food.defaultAmount/(1+:date2-:date1)), 0), ROUND(100*(SUM(IFNULL(foodContent.amount,0)*IFNULL(foodIntake.amount,0)/food.defaultAmount/(1+:date2-:date1)))/foodParameter.targetMin,0) AS targetMin FROM foodParameter LEFT JOIN foodContent ON foodContent.idParameter=foodParameter.id LEFT JOIN food ON food.id=foodContent.idFood LEFT JOIN foodIntake ON foodContent.idFood=foodIntake.idFood AND (foodIntake.fiDate BETWEEN :date1-1 AND :date2) LEFT JOIN unit ON foodParameter.idUnit=unit.id WHERE main=1 OR main=:main GROUP BY foodParameter.id ORDER BY IFNULL(foodParameter.idSuperParameter, foodParameter.id), foodParameter.idSuperParameter, foodParameter.name
+
+[Variables]
+Count=3
+Name0=date1
+DisplayName0=Дата начала
+IsNullable0=False
+VarType0=Date
+Name1=date2
+DisplayName1=Дата окончания
+IsNullable1=False
+VarType1=Date
+Name2=main
+DisplayName2=Только основные нутриенты
+IsNullable2=False
+VarType2=Flag
+
+[Columns]
+Count=3
+Name0=Наименование
+Name1=Количество
+Name2=% от минимума

@@ -1,0 +1,20 @@
+[Common]
+Name=Отчет по продуктам питания<br> с :date1 по :date2
+Query=SELECT food.name, ROUND(SUM(foodIntake.amount)/(1+:date2-:date1), 1) || ' ' || unit.shortName, SUM(foodIntake.amount) || ' ' || unit.shortName FROM food JOIN foodIntake ON food.id=foodIntake.idFood AND (foodIntake.fiDate BETWEEN :date1-1 AND :date2) LEFT JOIN unit ON food.idUnit=unit.id GROUP BY foodIntake.idFood ORDER BY food.name
+
+[Variables]
+Count=2
+Name0=date1
+DisplayName0=Дата начала
+IsNullable0=False
+VarType0=Date
+Name1=date2
+DisplayName1=Дата окончания
+IsNullable1=False
+VarType1=Date
+
+[Columns]
+Count=3
+Name0=Наименование
+Name1=Количество в день в среднем
+Name2=Количество всего за период
