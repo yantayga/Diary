@@ -32,6 +32,10 @@ FORMS += \
     mainwindow.ui \
     oneexecutiondialog.ui
 
+RC_ICONS = app.ico
+
+RC_FILE = Diary.rc
+
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
