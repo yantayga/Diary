@@ -18,16 +18,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     database.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    oneexecutiondialog.cpp
 
 HEADERS += \
     commontypes.h \
     database.h \
     mainwindow.h \
+    oneexecutiondialog.h \
     queries.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    oneexecutiondialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

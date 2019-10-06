@@ -1,14 +1,17 @@
 #pragma once
 
-#include <QString.h>
-#include <QList.h>
+#include <QString>
+#include <QList>
+#include <QMap>
+
+typedef QMap<int, QString> IdToString;
 
 struct DayExercise
 {
   int id;
   QString name;
   QString params;
-  QString otal;
+  QString total;
 };
 
 typedef QList<DayExercise> DayExercises;

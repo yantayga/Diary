@@ -8,7 +8,9 @@ class Database
 {
 private:
     QSqlDatabase _db;
+    QDate _delphiDateBegin;
 
+    qint64 toDelphiDate(QDate date);
 public:
     Database();
 
@@ -22,19 +24,17 @@ public:
 
     QStringList FetchUnitList();
 
-    QStringList FetchExList(bool All);
-    void FetchExInfo(int Id, int& ParamsCount,
-        QString& Param0Name, QString& Param0Unit, QString& Param1Name, QString& Param1Unit,
-        QString& Param2Name, QString& Param2Unit, QString& Comment, QString& LastComment);
-    void AddExecution(const QDate Date, int IdEx, double Param0, double Param1, double Param2, const QString& Comment, int& Id);
+    IdToString fetchExList(bool All);
+    void fetchExInfo(int id, QStringList& paramNames, QStringList& paramUnits, QString& comment, QString& lastComment);
+    void addExecution(const QDate date, int idEx, double param0, double param1, double param2, const QString& comment, int& id);
 
     QStringList FetchParametersList(bool All);
     void FetchParameterInfo(int Id, QString& ParamName);
     void AddTrackEvent(const QDate Date, int IdParameter, double Value, const QString& Comment);
     void FetchParameterSerie(QDate DateBegin, QDate DateEnd, int ParameterId, int DaysForPoint, QStringList& Series);
 
-    void FetchDayExercises(const QDate Date, DayExercises& RetDE);
-    void FetchDayExerciseItems(const QDate Date, int Id, DayExerciseItems& RetDE, QString& Name, QString& Comment);
+    DayExercises fetchDayExercises(const QDate date);
+    DayExerciseItems fetchDayExerciseItems(const QDate date, int id, QString& name, QString& comment);
     void FetchDayFood(const QDate Date, DayFoods& RetDF);
     void FetchDayParameters(const QDate Date, DayOthers& RetDO);
 
@@ -58,8 +58,8 @@ public:
     QStringList FetchParameterPageList();
     void FetchParameterPage(const QDate Date, const QString& Selected, DayFoodParameters& RetDFP);
 
-    void SaveOptionToDatabase(const QString& Key, const QString& Value);
-    QString LoadOptionFromDatabase(const QString& Key);
+    void saveOptionToDatabase(const QString& key, const QString& value);
+    QString loadOptionFromDatabase(const QString& key, const QString& defaultValue);
 
     QStringList FetchTagList(QDate Date);
     void AddTag(const QString& Name, QDate PeriodBegin, QDate PeriodEnd, const QString& Comment);

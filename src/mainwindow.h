@@ -18,10 +18,26 @@ public:
 
 public slots:
     void dateChanged(QDate date);
+    void exerciseSelectionChanged();
+    void onAddExecise();
 
 private:
     Database _db;
 
+    void updateExerciseDetails(QDate date, int id);
+    void updateExercises(QDate date);
+    void updateFood(QDate date);
+
+    QDate getActualDate();
+
+    void initTableWidgets();
+    void initTableWidgetColumns(const QString& name, const QStringList& headerLabels);
+    void saveTableWidgetStates();
+    void saveTableWidgetColumns(const QString& name);
 private:
     Ui::MainWindow *ui;
+
+    // QWidget interface
+protected:
+    void closeEvent(QCloseEvent *event);
 };
