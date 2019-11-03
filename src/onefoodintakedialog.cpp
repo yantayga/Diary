@@ -1,10 +1,12 @@
 #include "onefoodintakedialog.h"
 #include "ui_onefoodintakedialog.h"
 
+#include "utilites.h"
+
 #include <QLabel>
 #include <QDateEdit>
 #include <QLineEdit>
-#include <QTextEdit>
+#include <QPlainTextEdit>
 #include <QMessageBox>
 
 OneFoodIntakeDialog::OneFoodIntakeDialog(QWidget *parent, Database& db, QDate date, int id) :
@@ -16,6 +18,7 @@ OneFoodIntakeDialog::OneFoodIntakeDialog(QWidget *parent, Database& db, QDate da
 	ui->setupUi(this);
 
 	loadFoodList();
+	loadFoodIntake();
 
 	QDateEdit* dateEdit = findChild<QDateEdit*>("dateExecution");
 	dateEdit->setDate(date);
@@ -29,7 +32,7 @@ OneFoodIntakeDialog::~OneFoodIntakeDialog()
 	delete ui;
 }
 
-void OneFoodIntakeDialog::selectFood(QListWidgetItem *item)
+void OneFoodIntakeDialog::selectFood(QListWidgetItem*)
 {
 
 }
@@ -45,6 +48,37 @@ void OneFoodIntakeDialog::loadFoodList()
 		lst->addItem(pItem);
 	}
 	lst->sortItems();
+}
+
+void OneFoodIntakeDialog::loadFoodIntake()
+{
+	if (_id != -1)
+	{
+		QDate date;
+		int foodId;
+		double amount;
+		QString comment;
+		_db.fetchFoodIntake(_id, date, foodId, amount, comment);
+
+		QDateEdit* dateEdit = findChild<QDateEdit*>("dateExecution");
+		dateEdit->setDate(date);
+
+		QListWidget *lst = findChild<QListWidget*>("listFoods");
+		selectItemById(lst, foodId);
+
+		QLineEdit* thisAmount = findChild<QLineEdit*>("textAmount");
+		thisAmount->setText(QString::number(amount));
+
+		QPlainTextEdit* thisComment = findChild<QPlainTextEdit*>("textComment");
+		thisComment->setPlainText(comment);
+
+		thisAmount->setFocus();
+	}
+	else
+	{
+		QListWidget *lst = findChild<QListWidget*>("listFoods");
+		lst->setFocus();
+	}
 }
 
 void OneFoodIntakeDialog::accept()
@@ -68,7 +102,7 @@ void OneFoodIntakeDialog::accept()
 		return;
 	}
 
-	QTextEdit* thisComment = findChild<QTextEdit*>("textComment");
+	QPlainTextEdit* thisComment = findChild<QPlainTextEdit*>("textComment");
 
 	if (_id == -1)
 	{

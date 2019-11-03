@@ -49,7 +49,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QTextEdit" name="textComment">
+  <widget class="QPlainTextEdit" name="textComment">
    <property name="geometry">
     <rect>
      <x>9</x>

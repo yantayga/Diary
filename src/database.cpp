@@ -19,6 +19,11 @@ qint64 Database::toDelphiDate(QDate date)
 	return _delphiDateBegin.daysTo(date);
 }
 
+QDate Database::fromDelphiDate(qint64 days)
+{
+	return _delphiDateBegin.addDays(days);
+}
+
 int Database::getLastInsertedId()
 {
 	QSqlQuery queryId;
@@ -181,6 +186,22 @@ DayFoods Database::fetchDayFood(const QDate date)
 		result.append(dayFood);
 	}
 	return result;
+}
+
+bool Database::fetchFoodIntake(int id, QDate& date, int& idFood, double& amount, QString& comment)
+{
+	QSqlQuery query;
+	query.prepare(SelectFoodIntake);
+	query.bindValue(":id", id);
+	query.exec();
+	while(query.next())
+	{
+		date = fromDelphiDate(query.value(0).toInt());
+		idFood = query.value(1).toInt();
+		amount = query.value(2).toDouble();
+		comment = query.value(3).toString();
+		return true;
+	}
 }
 
 int Database::addFoodIntake(const QDate date, int idFood, double amount, const QString &comment)

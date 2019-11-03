@@ -26,6 +26,7 @@ private:
 	int _id;
 
 	void loadFoodList();
+	void loadFoodIntake();
 
 	// QDialog interface
 public slots:

@@ -28,7 +28,8 @@ HEADERS += \
     mainwindow.h \
     oneexecutiondialog.h \
     onefoodintakedialog.h \
-    queries.h
+    queries.h \
+    utilites.h
 
 FORMS += \
     mainwindow.ui \

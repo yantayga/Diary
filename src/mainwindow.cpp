@@ -70,6 +70,19 @@ void MainWindow::onAddFoodIntake()
 	}
 }
 
+void MainWindow::onEditFoodIntake(int row, int)
+{
+	QTableWidget* table = findChild<QTableWidget*>("tableFoodIncome");
+	QTableWidgetItem* pItem = table->item(row, 0);
+	int id = pItem->data(Qt::UserRole).toInt();
+
+	OneFoodIntakeDialog dlg(nullptr, _db, getActualDate(), id);
+	if (dlg.exec() == QDialog::Accepted)
+	{
+		updateFood(getActualDate());
+	}
+}
+
 void MainWindow::updateExercises(QDate date)
 {
 	DayExercises es = _db.fetchDayExercises(date);

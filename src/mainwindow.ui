@@ -443,6 +443,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>tableFoodIncome</sender>
+   <signal>cellDoubleClicked(int,int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>onEditFoodIntake(int,int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>648</x>
+     <y>301</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>524</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>dateChanged(QDate)</slot>
@@ -450,5 +466,6 @@
   <slot>onAddExecise()</slot>
   <slot>foodSelectionChanged()</slot>
   <slot>onAddFoodIntake()</slot>
+  <slot>onEditFoodIntake(int,int)</slot>
  </slots>
 </ui>
