@@ -3,6 +3,8 @@
 #include "onefoodintakedialog.h"
 #include "ui_mainwindow.h"
 
+#include "ProgressLikePainter.h"
+
 #include <QLabel>
 #include <QTableWidget>
 
@@ -164,11 +166,15 @@ void MainWindow::updateFoodDetails(QDate date, int id)
 				const DayFoodParameter& d = dfp.at(j);
 				if (!d.isMain && !all)
 					continue;
-				QTableWidgetItem* pItem = new QTableWidgetItem(d.name);
-				pItem->setData(Qt::UserRole, d.id);
-				table->setItem(k, 0, pItem);
-				QString s = QString::number(d.amount) + " из " + QString::number(d.targetMin) + "/" + QString::number(d.targetMax);
-				table->setItem(k, 1, new QTableWidgetItem(s));
+				QTableWidgetItem* pItem0 = new QTableWidgetItem(d.name);
+				pItem0->setData(Qt::UserRole, d.id);
+				table->setItem(k, 0, pItem0);
+				QString s = QString::number(d.amount) + " из (" + QString::number(d.targetMin) + "/" + QString::number(d.targetMax) + ")";
+				QTableWidgetItem* pItem1 = new QTableWidgetItem(s);
+				pItem1->setData(Qt::UserRole+1, d.amount);
+				pItem1->setData(Qt::UserRole+2, d.targetMin);
+				pItem1->setData(Qt::UserRole+3, d.targetMax);
+				table->setItem(k, 1, pItem1);
 				++k;
 			}
 		}
@@ -192,6 +198,8 @@ void MainWindow::initTableWidgets()
 		QString tableName = "tabsFoodContent_" + QString::number(i.key());
 		QTableWidget* table = new QTableWidget (0, 2);
 		table->setObjectName(tableName);
+		table->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+		table->setItemDelegateForColumn(1, new ProgressLikePainter());
 		foodTabs->addTab(table, i.value());
 		initTableWidgetColumns(tableName, {"Наименование", "Количество"});
 	}

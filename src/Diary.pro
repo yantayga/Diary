@@ -20,7 +20,8 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     oneexecutiondialog.cpp \
-    onefoodintakedialog.cpp
+    onefoodintakedialog.cpp \
+    progresslikepainter.cpp
 
 HEADERS += \
     commontypes.h \
@@ -28,6 +29,7 @@ HEADERS += \
     mainwindow.h \
     oneexecutiondialog.h \
     onefoodintakedialog.h \
+    progresslikepainter.h \
     queries.h \
     utilites.h
 
