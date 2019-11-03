@@ -97,6 +97,6 @@ void OneExecutionDialog::accept()
 
 	QPlainTextEdit* thisComment = findChild<QPlainTextEdit*>("textComment");
 
-	int retId = _db.addExecution(dateEdit->date(), id, p1, p2, p3, thisComment->toPlainText());
+	_db.addExecution(dateEdit->date(), id, p1, p2, p3, thisComment->toPlainText());
 	QDialog::accept();
 }

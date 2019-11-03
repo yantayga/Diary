@@ -137,13 +137,13 @@ void MainWindow::updateFood(QDate date)
 
 void MainWindow::updateFoodDetails(QDate date, int id)
 {
-	QString selected;
+	QString selected = false ? (QString::number(id)): "";
 	bool all = false;
 	DayFoodParameters dfp = _db.fetchParameterPage(date, selected);
 	QTabWidget* foodTabs = findChild<QTabWidget*>("tabsFoodContent");
 	for (int i = 0; i < foodTabs->count(); ++i)
 	{
-		QTableWidget* table = dynamic_cast<QTableWidget*>(foodTabs->widget(i));
+		QTableWidget* table = qobject_cast<QTableWidget*>(foodTabs->widget(i));
 		int rows = 0;
 		int id = table->objectName().right(1).toInt();
 		for (int j = 0; j < dfp.count(); ++j)
@@ -224,7 +224,7 @@ void MainWindow::saveTableWidgetStates()
 	QTabWidget* foodTabs = findChild<QTabWidget*>("tabsFoodContent");
 	for (int i = 0; i < foodTabs->count(); ++i)
 	{
-		QTableWidget* table = dynamic_cast<QTableWidget*>(foodTabs->widget(i));
+		QTableWidget* table = qobject_cast<QTableWidget*>(foodTabs->widget(i));
 		saveTableWidgetColumns(table->objectName());
 	}
 	_db.commitTransaction();
