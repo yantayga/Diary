@@ -28,24 +28,24 @@ public:
     void fetchExInfo(int id, QStringList& paramNames, QStringList& paramUnits, QString& comment, QString& lastComment);
     void addExecution(const QDate date, int idEx, double param0, double param1, double param2, const QString& comment, int& id);
 
-    QStringList FetchParametersList(bool All);
+    QStringList FetchParametersList(bool all);
     void FetchParameterInfo(int Id, QString& ParamName);
     void AddTrackEvent(const QDate Date, int IdParameter, double Value, const QString& Comment);
     void FetchParameterSerie(QDate DateBegin, QDate DateEnd, int ParameterId, int DaysForPoint, QStringList& Series);
 
     DayExercises fetchDayExercises(const QDate date);
     DayExerciseItems fetchDayExerciseItems(const QDate date, int id, QString& name, QString& comment);
-    void FetchDayFood(const QDate Date, DayFoods& RetDF);
+    DayFoods fetchDayFood(const QDate Date);
     void FetchDayParameters(const QDate Date, DayOthers& RetDO);
 
     void FetchNote(const QDate Date, QString& Note);
     void AddNote(const QDate Date, const QString& Note);
 
     void FetchFoodIntake(int Id, QDate& Date, int& FoodId, double& Amount, QString& Comment);
-    void AddFoodIntake(const QDate Date, int IDFood, double Amount, const QString& Comment);
-    void SaveFoodIntake(int Id, const QDate Date, int IDFood, double Amount, const QString& Comment);
+    void addFoodIntake(const QDate date, int idFood, double amount, const QString& comment);
+    void saveFoodIntake(int id, const QDate date, int idFood, double amount, const QString& comment);
     void DeleteFoodIntake(int Id);
-    QStringList FetchFoodList(bool All);
+    IdToString fetchFoodList(bool all);
     void FetchFoodInfo(int Id, QString& UnitName, QString& Comment);
     void FetchFoodItemInfoById(int Id, QString& Name, bool& Active,
       double& DefaultAmount, int& Unit, QString& Comment);
@@ -55,7 +55,7 @@ public:
       bool Active, double DefaultAmount, int Unit, const QString& Comment);
     void FetchFoodContent(int Id, FoodParameterContents& FoodParameterContents);
     void SaveFoodItemContent(int IdFood, int IdParameter, double Value);
-    QStringList FetchParameterPageList();
+    IdToString fetchParameterPageList();
     void FetchParameterPage(const QDate Date, const QString& Selected, DayFoodParameters& RetDFP);
 
     void saveOptionToDatabase(const QString& key, const QString& value);

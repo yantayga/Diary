@@ -29,7 +29,7 @@ struct DayFood
 {
   int id;
   QString name;
-  double amount;
+  QString amount;
   QString comments;
 };
 

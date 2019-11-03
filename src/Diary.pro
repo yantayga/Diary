@@ -19,18 +19,21 @@ SOURCES += \
     database.cpp \
     main.cpp \
     mainwindow.cpp \
-    oneexecutiondialog.cpp
+    oneexecutiondialog.cpp \
+    onefoodintakedialog.cpp
 
 HEADERS += \
     commontypes.h \
     database.h \
     mainwindow.h \
     oneexecutiondialog.h \
+    onefoodintakedialog.h \
     queries.h
 
 FORMS += \
     mainwindow.ui \
-    oneexecutiondialog.ui
+    oneexecutiondialog.ui \
+    onefoodintakedialog.ui
 
 RC_ICONS = app.ico
 

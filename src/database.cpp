@@ -62,12 +62,12 @@ void Database::createTables()
     query.exec(CreateReportsTable);
 }
 
-IdToString Database::fetchExList(bool All)
+IdToString Database::fetchExList(bool all)
 {
     IdToString result;
     QSqlQuery query;
     query.prepare(SelectExList);
-    query.bindValue(":active", All?0:1);
+    query.bindValue(":active", all?0:1);
     query.exec();
     while(query.next())
     {
@@ -153,6 +153,69 @@ DayExerciseItems Database::fetchDayExerciseItems(const QDate date, int id, QStri
             name = query.value(3).toString();
             comment = query.value(4).toString();
         }
+    }
+    return result;
+}
+
+DayFoods Database::fetchDayFood(const QDate date)
+{
+    DayFoods result;
+    QSqlQuery query;
+    query.prepare(SelectFoodDay);
+    query.bindValue(":date", toDelphiDate(date));
+    query.exec();
+    while(query.next())
+    {
+        DayFood dayFood;
+        dayFood.id = query.value(0).toInt();
+        dayFood.name = query.value(1).toString();
+        dayFood.amount = query.value(2).toString();
+        dayFood.comments = query.value(3).toString();
+        result.append(dayFood);
+    }
+    return result;
+}
+
+void Database::addFoodIntake(const QDate date, int idFood, double amount, const QString &comment)
+{
+    QSqlQuery query, queryId;
+    query.prepare(InsertFoodIntake);
+    query.bindValue(":date", toDelphiDate(date));
+    query.bindValue(":idFood", idFood);
+    query.bindValue(":amount", amount);
+    query.bindValue(":comments", comment);
+    query.exec();
+
+    queryId.exec("SELECT last_insert_rowid()");
+    if(queryId.next())
+    {
+        //id = queryId.value(0).toInt();
+    }
+}
+
+IdToString Database::fetchFoodList(bool all)
+{
+    IdToString result;
+    QSqlQuery query;
+    query.prepare(SelectFoodList);
+    query.bindValue(":active", all?0:1);
+    query.exec();
+    while(query.next())
+    {
+        result.insert(query.value(0).toInt(), query.value(1).toString());
+    }
+    return result;
+}
+
+IdToString Database::fetchParameterPageList()
+{
+    IdToString result;
+    QSqlQuery query;
+    query.prepare(SelectParameterPageList);
+    query.exec();
+    while(query.next())
+    {
+        result.insert(query.value(0).toInt(), query.value(1).toString());
     }
     return result;
 }

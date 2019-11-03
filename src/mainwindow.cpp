@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "oneexecutiondialog.h"
+#include "onefoodintakedialog.h"
 #include "ui_mainwindow.h"
 
 #include <QLabel>
@@ -21,6 +22,71 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::exerciseSelectionChanged()
+{
+    QTableWidget* table = findChild<QTableWidget*>("tableExcercises");
+    if (table->selectedRanges().count() == 0)
+    {
+        QLabel* total = findChild<QLabel*>("totalExercises");
+        total->setText(QString(""));
+        QTableWidget* table = findChild<QTableWidget*>("tableExerciseDetails");
+        table->setRowCount(0);
+        return;
+    }
+    int row = table->selectedRanges().at(0).topRow();
+    QTableWidgetItem* pItem = table->item(row, 0);
+    int id = pItem->data(Qt::UserRole).toInt();
+    updateExerciseDetails(getActualDate(), id);
+}
+
+void MainWindow::foodSelectionChanged()
+{
+    int id = -1;
+    QTableWidget* table = findChild<QTableWidget*>("tableFoodIncome");
+    if (table->selectedRanges().count() != 0)
+    {
+        int row = table->selectedRanges().at(0).topRow();
+        QTableWidgetItem* pItem = table->item(row, 0);
+        id = pItem->data(Qt::UserRole).toInt();
+    }
+    updateExerciseDetails(getActualDate(), id);
+}
+
+void MainWindow::onAddExecise()
+{
+    OneExecutionDialog dlg(nullptr, _db, getActualDate());
+    if (dlg.exec() == QDialog::Accepted)
+    {
+        updateExercises(getActualDate());
+    }
+}
+
+void MainWindow::onAddFoodIntake()
+{
+    OneFoodIntakeDialog dlg(nullptr, _db, getActualDate());
+    if (dlg.exec() == QDialog::Accepted)
+    {
+        updateFood(getActualDate());
+    }
+}
+
+void MainWindow::updateExercises(QDate date)
+{
+    DayExercises es = _db.fetchDayExercises(date);
+    QTableWidget* table = findChild<QTableWidget*>("tableExcercises");
+    table->setRowCount(es.count());
+    for (int i = 0; i < es.count(); ++i)
+    {
+        const DayExercise& d = es.at(i);
+        QTableWidgetItem* pItem = new QTableWidgetItem(d.name);
+        pItem->setData(Qt::UserRole, d.id);
+        table->setItem(i, 0, pItem);
+        table->setItem(i, 1, new QTableWidgetItem(d.params));
+        table->setItem(i, 2, new QTableWidgetItem(d.total));
+    }
+    exerciseSelectionChanged();
+}
+
 void MainWindow::updateExerciseDetails(QDate date, int id)
 {
     QString name, comments;
@@ -39,55 +105,25 @@ void MainWindow::updateExerciseDetails(QDate date, int id)
     }
 }
 
-void MainWindow::exerciseSelectionChanged()
-{
-    qDebug() << "Exercise selected";
-    QTableWidget* table = findChild<QTableWidget*>("tableExcercises");
-    if (table->selectedRanges().count() == 0)
-    {
-        QLabel* total = findChild<QLabel*>("totalExercises");
-        total->setText(QString(""));
-        QTableWidget* table = findChild<QTableWidget*>("tableExerciseDetails");
-        table->setRowCount(0);
-        return;
-    }
-    int row = table->selectedRanges().at(0).topRow();
-    QTableWidgetItem* pItem = table->item(row, 0);
-    int id = pItem->data(Qt::UserRole).toInt();
-    QDate date = pItem->data(Qt::UserRole + 1).toDate();
-    updateExerciseDetails(date, id);
-}
-
-void MainWindow::onAddExecise()
-{
-    OneExecutionDialog dlg(nullptr, _db, getActualDate());
-    if (dlg.exec() == QDialog::Accepted)
-    {
-        updateExercises(getActualDate());
-    }
-}
-
-void MainWindow::updateExercises(QDate date)
-{
-    DayExercises es = _db.fetchDayExercises(date);
-    QTableWidget* table = findChild<QTableWidget*>("tableExcercises");
-    table->setRowCount(es.count());
-    for (int i = 0; i < es.count(); ++i)
-    {
-        const DayExercise& d = es.at(i);
-        QTableWidgetItem* pItem = new QTableWidgetItem(d.name);
-        pItem->setData(Qt::UserRole, d.id);
-        pItem->setData(Qt::UserRole + 1, date);
-        table->setItem(i, 0, pItem);
-        table->setItem(i, 1, new QTableWidgetItem(d.params));
-        table->setItem(i, 2, new QTableWidgetItem(d.total));
-    }
-    exerciseSelectionChanged();
-}
-
 void MainWindow::updateFood(QDate date)
 {
-    date = date.addDays(1);
+    DayFoods fs = _db.fetchDayFood(date);
+    QTableWidget* table = findChild<QTableWidget*>("tableFoodIncome");
+    table->setRowCount(fs.count());
+    for (int i = 0; i < fs.count(); ++i)
+    {
+        const DayFood& d = fs.at(i);
+        QTableWidgetItem* pItem = new QTableWidgetItem(d.name);
+        pItem->setData(Qt::UserRole, d.id);
+        table->setItem(i, 0, pItem);
+        table->setItem(i, 1, new QTableWidgetItem(d.amount));
+        //table->setItem(i, 2, new QTableWidgetItem(d.comments));V
+    }
+    foodSelectionChanged();
+}
+
+void MainWindow::updateFoodDetails(QDate date, int id)
+{
 }
 
 QDate MainWindow::getActualDate()
@@ -100,6 +136,17 @@ void MainWindow::initTableWidgets()
 {
     initTableWidgetColumns("tableExcercises", {"Наименование", "Количество всего", "Среднее"});
     initTableWidgetColumns("tableExerciseDetails", {"Количество", "Комментарий"});
+    IdToString parameters = _db.fetchParameterPageList();
+    QTabWidget* foodTabs = findChild<QTabWidget*>("tabsFoodContent");
+    for (IdToString::const_iterator i = parameters.begin(); i != parameters.end(); ++i)
+    {
+        QString tableName = "tabsFoodContent_" + QString::number(i.key());
+        QTableWidget* table = new QTableWidget (0, 2);
+        table->setObjectName(tableName);
+        foodTabs->addTab(table, i.value());
+        initTableWidgetColumns(tableName, {"Наименование", "Количество"});
+    }
+    initTableWidgetColumns("tableFoodIncome", {"Наименование", "Количество"});
 }
 
 void MainWindow::initTableWidgetColumns(const QString& name, const QStringList& headerLabels)
@@ -114,12 +161,22 @@ void MainWindow::initTableWidgetColumns(const QString& name, const QStringList& 
             QString::number(150)
         ).toInt());
     }
+    table->resize(
+       _db.loadOptionFromDatabase("MainWindow_ControlWidth_" + name, QString::number(150)).toInt(),
+       _db.loadOptionFromDatabase("MainWindow_ControlHeight_" + name, QString::number(150)).toInt());
 }
 
 void MainWindow::saveTableWidgetStates()
 {
     saveTableWidgetColumns("tableExcercises");
     saveTableWidgetColumns("tableExerciseDetails");
+    saveTableWidgetColumns("tableFoodIncome");
+    QTabWidget* foodTabs = findChild<QTabWidget*>("tabsFoodContent");
+    for (int i = 0; i < foodTabs->count(); ++i)
+    {
+        QTableWidget* table = dynamic_cast<QTableWidget*>(foodTabs->widget(i));
+        saveTableWidgetColumns(table->objectName());
+    }
 }
 
 void MainWindow::saveTableWidgetColumns(const QString& name)
@@ -129,6 +186,8 @@ void MainWindow::saveTableWidgetColumns(const QString& name)
     {
         _db.saveOptionToDatabase("MainWindow_" + name + "_ColWidth_" + QString::number(i), QString::number(table->columnWidth(i)));
     }
+    _db.saveOptionToDatabase("MainWindow_ControlWidth_" + name, QString::number(table->width()));
+    _db.saveOptionToDatabase("MainWindow_ControlHeight_" + name, QString::number(table->height()));
 }
 
 void MainWindow::closeEvent(QCloseEvent* /* event */)

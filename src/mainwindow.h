@@ -19,7 +19,9 @@ public:
 public slots:
     void dateChanged(QDate date);
     void exerciseSelectionChanged();
+    void foodSelectionChanged();
     void onAddExecise();
+    void onAddFoodIntake();
 
 private:
     Database _db;
@@ -27,6 +29,7 @@ private:
     void updateExerciseDetails(QDate date, int id);
     void updateExercises(QDate date);
     void updateFood(QDate date);
+    void updateFoodDetails(QDate date, int id);
 
     QDate getActualDate();
 

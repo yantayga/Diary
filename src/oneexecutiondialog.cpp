@@ -3,7 +3,7 @@
 
 #include <QLabel>
 #include <QDateEdit>
-#include <QTextEdit>
+#include <QPlainTextEdit>
 
 OneExecutionDialog::OneExecutionDialog(QWidget *parent, Database& db, QDate date):
     QDialog(parent),
@@ -45,8 +45,8 @@ void OneExecutionDialog::selectExercise(QListWidgetItem* item)
     QLabel* excomments = findChild<QLabel*>("labelComments");
     excomments->setText(comment);
 
-    QTextEdit* thisComment = findChild<QTextEdit*>("textComment");
-    thisComment->setText(lastComment);
+    QPlainTextEdit* thisComment = findChild<QPlainTextEdit*>("textComment");
+    thisComment->setPlainText(lastComment);
 }
 
 void OneExecutionDialog::loadExercisesList()
@@ -69,7 +69,7 @@ void OneExecutionDialog::accept()
     QListWidget *lst = findChild<QListWidget*>("listExercises");
     if (lst->selectedItems().size() == 0)
     {
-        reject();
+        return;
     }
     int id = lst->selectedItems()[0]->data(Qt::UserRole).toInt();
 
@@ -90,7 +90,7 @@ void OneExecutionDialog::accept()
 
     int retId = 0;
 
-    QTextEdit* thisComment = findChild<QTextEdit*>("textComment");
+    QPlainTextEdit* thisComment = findChild<QPlainTextEdit*>("textComment");
 
     _db.addExecution(dateEdit->date(), id, p1, p2, p3, thisComment->toPlainText(), retId);
     QDialog::accept();
