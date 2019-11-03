@@ -27,26 +27,26 @@ typedef QList<DayExerciseItem> DayExerciseItems;
 
 struct DayFood
 {
-  int id;
-  QString name;
-  QString amount;
-  QString comments;
+	int id;
+	QString name;
+	QString amount;
+	QString comments;
 };
 
 typedef QList<DayFood> DayFoods;
 
 struct DayFoodParameter
 {
-  int idPage;;
-  int id;
-  int idParent;
-  QString name;
-  double argetMin;
-  double argetMax;
-  double amount;
-  QString unitM;
-  QString comments;
-  bool isMain;
+	int idPage;;
+	int id;
+	int idParent;
+	QString name;
+	double targetMin;
+	double targetMax;
+	double amount;
+	QString unitM;
+	QString comments;
+	bool isMain;
 };
 
 typedef QList<DayFoodParameter> DayFoodParameters;
@@ -87,9 +87,9 @@ typedef QList<TagEvent> TagEvents;
 
 enum class VarType
 {
-    vtInteger,
-    vtDate,
-    vtFlag,
+	vtInteger,
+	vtDate,
+	vtFlag,
 };
 
 struct ReportVar
@@ -100,9 +100,9 @@ struct ReportVar
   VarType varType;
   union
   {
-    int valInt;
-    QDate valDate;
-    bool valBool;
+	int valInt;
+	QDate valDate;
+	bool valBool;
   };
 };
 

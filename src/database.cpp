@@ -255,6 +255,40 @@ IdToString Database::fetchParameterPageList()
 	return result;
 }
 
+DayFoodParameters Database::fetchParameterPage(const QDate date, const QString& selected)
+{
+	DayFoodParameters result;
+	QSqlQuery query;
+	if (selected.isEmpty())
+	{
+		query.prepare(SelectFoodPageDay);
+	}
+	else
+	{
+		QString sql = SelectSelectedFoodPageDay;
+		sql.replace(":selected", selected);
+		query.prepare(sql);
+	}
+	query.bindValue(":date", toDelphiDate(date));
+	query.exec();
+	while(query.next())
+	{
+		DayFoodParameter dayFood;
+		dayFood.id = query.value(0).toInt();
+		dayFood.idParent = query.value(1).toInt();
+		dayFood.name = query.value(2).toString();
+		dayFood.targetMin = query.value(3).toDouble();
+		dayFood.targetMax = query.value(4).toDouble();
+		dayFood.amount = query.value(5).toDouble();
+		dayFood.unitM = query.value(6).toString();
+		dayFood.comments = query.value(7).toString();
+		dayFood.idPage = query.value(8).toInt();
+		dayFood.isMain = query.value(9).toInt() == 1;
+		result.append(dayFood);
+	}
+	return result;
+}
+
 void Database::saveOptionToDatabase(const QString &key, const QString &value)
 {
 	QSqlQuery query;

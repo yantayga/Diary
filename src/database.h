@@ -58,7 +58,7 @@ public:
 	void FetchFoodContent(int Id, FoodParameterContents& FoodParameterContents);
 	void SaveFoodItemContent(int IdFood, int IdParameter, double Value);
 	IdToString fetchParameterPageList();
-	void FetchParameterPage(const QDate Date, const QString& Selected, DayFoodParameters& RetDFP);
+	DayFoodParameters fetchParameterPage(const QDate date, const QString& selected);
 
 	void saveOptionToDatabase(const QString& key, const QString& value);
 	QString loadOptionFromDatabase(const QString& key, const QString& defaultValue);

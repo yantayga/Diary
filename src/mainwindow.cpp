@@ -49,7 +49,7 @@ void MainWindow::foodSelectionChanged()
 		QTableWidgetItem* pItem = table->item(row, 0);
 		id = pItem->data(Qt::UserRole).toInt();
 	}
-	updateExerciseDetails(getActualDate(), id);
+	updateFoodDetails(getActualDate(), id);
 }
 
 void MainWindow::onAddExecise()
@@ -137,6 +137,42 @@ void MainWindow::updateFood(QDate date)
 
 void MainWindow::updateFoodDetails(QDate date, int id)
 {
+	QString selected;
+	bool all = false;
+	DayFoodParameters dfp = _db.fetchParameterPage(date, selected);
+	QTabWidget* foodTabs = findChild<QTabWidget*>("tabsFoodContent");
+	for (int i = 0; i < foodTabs->count(); ++i)
+	{
+		QTableWidget* table = dynamic_cast<QTableWidget*>(foodTabs->widget(i));
+		int rows = 0;
+		int id = table->objectName().right(1).toInt();
+		for (int j = 0; j < dfp.count(); ++j)
+		{
+			const DayFoodParameter& d = dfp.at(j);
+			if (d.idPage == id)
+			{
+				if (!d.isMain && !all)
+					continue;
+				++rows;
+			}
+		}
+		table->setRowCount(rows);
+		for (int j = 0, k = 0; j < dfp.count(); ++j)
+		{
+			if (dfp[j].idPage == id)
+			{
+				const DayFoodParameter& d = dfp.at(j);
+				if (!d.isMain && !all)
+					continue;
+				QTableWidgetItem* pItem = new QTableWidgetItem(d.name);
+				pItem->setData(Qt::UserRole, d.id);
+				table->setItem(k, 0, pItem);
+				QString s = QString::number(d.amount) + " из " + QString::number(d.targetMin) + "/" + QString::number(d.targetMax);
+				table->setItem(k, 1, new QTableWidgetItem(s));
+				++k;
+			}
+		}
+	}
 }
 
 QDate MainWindow::getActualDate()
