@@ -3,7 +3,7 @@
 #include "onefoodintakedialog.h"
 #include "ui_mainwindow.h"
 
-#include "ProgressLikePainter.h"
+#include "progresslikepainter.h"
 
 #include <QLabel>
 #include <QTableWidget>
