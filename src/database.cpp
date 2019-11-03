@@ -194,7 +194,7 @@ bool Database::fetchFoodIntake(int id, QDate& date, int& idFood, double& amount,
 	query.prepare(SelectFoodIntake);
 	query.bindValue(":id", id);
 	query.exec();
-	while(query.next())
+	if(query.next())
 	{
 		date = fromDelphiDate(query.value(0).toInt());
 		idFood = query.value(1).toInt();
@@ -202,6 +202,8 @@ bool Database::fetchFoodIntake(int id, QDate& date, int& idFood, double& amount,
 		comment = query.value(3).toString();
 		return true;
 	}
+
+	return false;
 }
 
 int Database::addFoodIntake(const QDate date, int idFood, double amount, const QString &comment)
