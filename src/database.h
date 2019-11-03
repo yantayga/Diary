@@ -11,6 +11,7 @@ private:
     QDate _delphiDateBegin;
 
     qint64 toDelphiDate(QDate date);
+	int getLastInsertedId();
 public:
     Database();
 
@@ -26,7 +27,7 @@ public:
 
     IdToString fetchExList(bool All);
     void fetchExInfo(int id, QStringList& paramNames, QStringList& paramUnits, QString& comment, QString& lastComment);
-    void addExecution(const QDate date, int idEx, double param0, double param1, double param2, const QString& comment, int& id);
+	int addExecution(const QDate date, int idEx, double param0, double param1, double param2, const QString& comment);
 
     QStringList FetchParametersList(bool all);
     void FetchParameterInfo(int Id, QString& ParamName);
@@ -42,7 +43,7 @@ public:
     void AddNote(const QDate Date, const QString& Note);
 
     void FetchFoodIntake(int Id, QDate& Date, int& FoodId, double& Amount, QString& Comment);
-    void addFoodIntake(const QDate date, int idFood, double amount, const QString& comment);
+	int addFoodIntake(const QDate date, int idFood, double amount, const QString& comment);
     void saveFoodIntake(int id, const QDate date, int idFood, double amount, const QString& comment);
     void DeleteFoodIntake(int Id);
     IdToString fetchFoodList(bool all);

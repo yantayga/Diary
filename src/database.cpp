@@ -19,6 +19,18 @@ qint64 Database::toDelphiDate(QDate date)
 	return _delphiDateBegin.daysTo(date);
 }
 
+int Database::getLastInsertedId()
+{
+	QSqlQuery queryId;
+	queryId.exec("SELECT last_insert_rowid()");
+	if(queryId.next())
+	{
+		return queryId.value(0).toInt();
+	}
+
+	return -1;
+}
+
 bool Database::beginTransaction()
 {
 	if (!_db.transaction())
@@ -95,7 +107,7 @@ void Database::fetchExInfo(int id, QStringList &paramNames, QStringList &paramUn
 	}
 }
 
-void Database::addExecution(const QDate date, int idEx, double param0, double param1, double param2, const QString &comment, int &id)
+int Database::addExecution(const QDate date, int idEx, double param0, double param1, double param2, const QString &comment)
 {
 	QSqlQuery query, queryId;
 	query.prepare(InsertOneExecution);
@@ -106,12 +118,7 @@ void Database::addExecution(const QDate date, int idEx, double param0, double pa
 	query.bindValue(":param2", param2);
 	query.bindValue(":comments", comment);
 	query.exec();
-
-	queryId.exec("SELECT last_insert_rowid()");
-	if(queryId.next())
-	{
-		id = queryId.value(0).toInt();
-	}
+	return getLastInsertedId();
 }
 
 DayExercises Database::fetchDayExercises(const QDate date)
@@ -176,21 +183,16 @@ DayFoods Database::fetchDayFood(const QDate date)
 	return result;
 }
 
-void Database::addFoodIntake(const QDate date, int idFood, double amount, const QString &comment)
+int Database::addFoodIntake(const QDate date, int idFood, double amount, const QString &comment)
 {
-	QSqlQuery query, queryId;
+	QSqlQuery query;
 	query.prepare(InsertFoodIntake);
 	query.bindValue(":date", toDelphiDate(date));
 	query.bindValue(":idFood", idFood);
 	query.bindValue(":amount", amount);
 	query.bindValue(":comments", comment);
 	query.exec();
-
-	queryId.exec("SELECT last_insert_rowid()");
-	if(queryId.next())
-	{
-		//id = queryId.value(0).toInt();
-	}
+	return getLastInsertedId();
 }
 
 void Database::saveFoodIntake(int id, const QDate date, int idFood, double amount, const QString& comment)
