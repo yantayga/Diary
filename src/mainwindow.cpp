@@ -168,6 +168,7 @@ void MainWindow::initTableWidgetColumns(const QString& name, const QStringList& 
 
 void MainWindow::saveTableWidgetStates()
 {
+	_db.beginTransaction();
 	saveTableWidgetColumns("tableExcercises");
 	saveTableWidgetColumns("tableExerciseDetails");
 	saveTableWidgetColumns("tableFoodIncome");
@@ -177,6 +178,7 @@ void MainWindow::saveTableWidgetStates()
 		QTableWidget* table = dynamic_cast<QTableWidget*>(foodTabs->widget(i));
 		saveTableWidgetColumns(table->objectName());
 	}
+	_db.commitTransaction();
 }
 
 void MainWindow::saveTableWidgetColumns(const QString& name)
