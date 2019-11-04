@@ -199,6 +199,8 @@ void MainWindow::initTableWidgets()
 		QTableWidget* table = new QTableWidget (0, 2);
 		table->setObjectName(tableName);
 		table->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+		table->verticalHeader()->setVisible(false);
+		table->verticalHeader()->setDefaultSectionSize(18);
 		table->setItemDelegateForColumn(1, new ProgressLikePainter());
 		foodTabs->addTab(table, i.value());
 		initTableWidgetColumns(tableName, {"Наименование", "Количество"});
