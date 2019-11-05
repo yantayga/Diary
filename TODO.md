@@ -1,10 +1,15 @@
+- Add food editor
+
+- Add exercise editor
+
 - Add tracking
 
 - Add tracking graphics
 
 - Add reports
 
-- Add reminders
+- Add reminders and events
 
-- Add saving/restore window size
+- Add saving/restoring window size
 
+- 
