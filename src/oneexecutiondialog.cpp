@@ -17,6 +17,9 @@ OneExecutionDialog::OneExecutionDialog(QWidget *parent, Database& db, QDate date
 
 	QDateEdit* dateEdit = findChild<QDateEdit*>("dateExecution");
 	dateEdit->setDate(date);
+
+	QTableWidget* params = findChild<QTableWidget*>("tableParams");
+	params->setItemDelegateForColumn(1, new EditValidatedDelegate(params));
 }
 
 OneExecutionDialog::~OneExecutionDialog()
@@ -79,7 +82,8 @@ void OneExecutionDialog::accept()
 	QTableWidget* params = findChild<QTableWidget*>("tableParams");
 	if (params->rowCount() > 0)
 	{
-		p1 = params->item(0, 1)->text().toDouble();
+		QString s = params->item(0, 1)->text().replace(',','.');
+		p1 = s.toDouble();
 		if (p1 < 0.0000001)
 		{
 			QMessageBox::warning(this,"Недопустимый параметр", "Не заполнено количество");
@@ -88,11 +92,13 @@ void OneExecutionDialog::accept()
 	}
 	if (params->rowCount() > 1)
 	{
-		p2 = params->item(1, 1)->text().toDouble();
+		QString s = params->item(1, 1)->text().replace(',','.');
+		p2 = s.toDouble();
 	}
 	if (params->rowCount() > 2)
 	{
-		p3 = params->item(2, 1)->text().toDouble();
+		QString s = params->item(2, 1)->text().replace(',','.');
+		p3 = s.toDouble();
 	}
 
 	QPlainTextEdit* thisComment = findChild<QPlainTextEdit*>("textComment");

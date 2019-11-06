@@ -21,7 +21,8 @@ SOURCES += \
     mainwindow.cpp \
     oneexecutiondialog.cpp \
     onefoodintakedialog.cpp \
-    progresslikepainter.cpp
+    progresslikepainter.cpp \
+    utilites.cpp
 
 HEADERS += \
     commontypes.h \

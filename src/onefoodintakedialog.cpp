@@ -24,7 +24,7 @@ OneFoodIntakeDialog::OneFoodIntakeDialog(QWidget *parent, Database& db, QDate da
 	dateEdit->setDate(date);
 
 	QLineEdit* thisAmount = findChild<QLineEdit*>("textAmount");
-	thisAmount->setValidator(new QDoubleValidator);
+	thisAmount->setValidator(createUniversalDoubleValidator());
 }
 
 OneFoodIntakeDialog::~OneFoodIntakeDialog()
@@ -95,7 +95,8 @@ void OneFoodIntakeDialog::accept()
 
 	QLineEdit* thisAmount = findChild<QLineEdit*>("textAmount");
 
-	double amount = thisAmount->text().toDouble();
+	QString s = thisAmount->text().replace(',','.');
+	double amount = s.toDouble();
 	if (amount < 0.0000001)
 	{
 		QMessageBox::warning(this,"Недопустимый параметр", "Не заполнено количество");

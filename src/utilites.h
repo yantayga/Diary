@@ -2,6 +2,7 @@
 
 #include <QWidget>
 #include <QItemSelectionModel>
+#include <QValidator>
 
 template<class W>
 void selectItemById(W* widget, int id)
@@ -16,3 +17,6 @@ void selectItemById(W* widget, int id)
 		}
 	}
 }
+
+QValidator* createUniversalDoubleValidator();
+
