@@ -56,6 +56,7 @@ public:
 
 public slots:
 	void selectExercise(QListWidgetItem* item);
+	void chkShowAllStateChanged(int);
 
 private:
 	Ui::OneExecutionDialog *ui;

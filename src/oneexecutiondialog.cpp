@@ -3,6 +3,7 @@
 
 #include <QLabel>
 #include <QDateEdit>
+#include <QCheckBox>
 #include <QPlainTextEdit>
 #include <QMessageBox>
 
@@ -53,10 +54,18 @@ void OneExecutionDialog::selectExercise(QListWidgetItem* item)
 	thisComment->setPlainText(lastComment);
 }
 
+void OneExecutionDialog::chkShowAllStateChanged(int)
+{
+	loadExercisesList();
+}
+
 void OneExecutionDialog::loadExercisesList()
 {
-	IdToString exs = _db.fetchExList(true);
 	QListWidget *lst = findChild<QListWidget*>("listExercises");
+	lst->clear();
+
+	QCheckBox* showAll = findChild<QCheckBox*>("chkShowAll");
+	IdToString exs = _db.fetchExList(showAll->isChecked());
 	for (IdToString::const_iterator i = exs.begin(); i != exs.end(); ++i)
 	{
 		QListWidgetItem* pItem = new QListWidgetItem(i.value());

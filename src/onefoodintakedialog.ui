@@ -34,7 +34,7 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>481</width>
+     <width>341</width>
      <height>22</height>
     </rect>
    </property>
@@ -91,6 +91,19 @@
     <string>количество</string>
    </property>
   </widget>
+  <widget class="QCheckBox" name="chkShowAll">
+   <property name="geometry">
+    <rect>
+     <x>379</x>
+     <y>12</y>
+     <width>111</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Показывать все</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections>
@@ -142,8 +155,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>chkShowAll</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>OneFoodIntakeDialog</receiver>
+   <slot>chkShowAllStateChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>434</x>
+     <y>21</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>249</x>
+     <y>347</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>selectFood(QListWidgetItem*)</slot>
+  <slot>chkShowAllStateChanged(int)</slot>
  </slots>
 </ui>

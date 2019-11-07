@@ -19,6 +19,7 @@ public:
 
 public slots:
 	void selectFood(QListWidgetItem* item);
+	void chkShowAllStateChanged(int);
 
 private:
 	Ui::OneFoodIntakeDialog *ui;

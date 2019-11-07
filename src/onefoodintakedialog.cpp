@@ -5,6 +5,7 @@
 
 #include <QLabel>
 #include <QDateEdit>
+#include <QCheckBox>
 #include <QLineEdit>
 #include <QPlainTextEdit>
 #include <QMessageBox>
@@ -37,10 +38,18 @@ void OneFoodIntakeDialog::selectFood(QListWidgetItem*)
 
 }
 
+void OneFoodIntakeDialog::chkShowAllStateChanged(int)
+{
+	loadFoodList();
+}
+
 void OneFoodIntakeDialog::loadFoodList()
 {
-	IdToString exs = _db.fetchFoodList(true);
 	QListWidget *lst = findChild<QListWidget*>("listFoods");
+	lst->clear();
+
+	QCheckBox* showAll = findChild<QCheckBox*>("chkShowAll");
+	IdToString exs = _db.fetchFoodList(showAll->isChecked());
 	for (IdToString::const_iterator i = exs.begin(); i != exs.end(); ++i)
 	{
 		QListWidgetItem* pItem = new QListWidgetItem(i.value());
