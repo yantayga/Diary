@@ -21,6 +21,9 @@ OneExecutionDialog::OneExecutionDialog(QWidget *parent, Database& db, QDate date
 
 	QTableWidget* params = findChild<QTableWidget*>("tableParams");
 	params->setItemDelegateForColumn(1, new EditValidatedDelegate(params));
+
+	QLineEdit* numOfCopies = findChild<QLineEdit*>("NumOfCopies");
+	numOfCopies->setValidator(new QIntValidator(1, 100));
 }
 
 OneExecutionDialog::~OneExecutionDialog()
@@ -112,6 +115,16 @@ void OneExecutionDialog::accept()
 
 	QPlainTextEdit* thisComment = findChild<QPlainTextEdit*>("textComment");
 
-	_db.addExecution(dateEdit->date(), id, p1, p2, p3, thisComment->toPlainText());
+	QLineEdit* numOfCopies = findChild<QLineEdit*>("NumOfCopies");
+	size_t n = numOfCopies->text().toUInt();
+
+	_db.beginTransaction();
+
+	for (size_t i = 0; i < n; ++i)
+	{
+		_db.addExecution(dateEdit->date(), id, p1, p2, p3, thisComment->toPlainText());
+	}
+
+	_db.commitTransaction();
 	QDialog::accept();
 }

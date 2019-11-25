@@ -48,7 +48,7 @@
      <x>10</x>
      <y>310</y>
      <width>311</width>
-     <height>111</height>
+     <height>91</height>
     </rect>
    </property>
    <property name="columnCount">
@@ -132,6 +132,35 @@
    </property>
    <property name="text">
     <string>Показывать все</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>476</y>
+     <width>47</width>
+     <height>13</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Копий:</string>
+   </property>
+   <property name="textFormat">
+    <enum>Qt::PlainText</enum>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="NumOfCopies">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>472</y>
+     <width>31</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>1</string>
    </property>
   </widget>
  </widget>
